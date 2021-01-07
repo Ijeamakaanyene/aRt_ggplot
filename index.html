@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>aRt + ggplot: exploring radial visualizations</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ijeamaka Anyene" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+    <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+# aRt + ggplot: exploring radial visualizations
+### Ijeamaka Anyene
+### RLadies Johannesburg &amp; Tunis Meetup
+### 2020/01/14
+
+---
+
+[@ijeamaka_a](https://twitter.com/ijeamaka_a)
+[ijeamakaa/aRt_ggplot_slides]()
+---
+aRt: intersection of computation and art  
+...but in #rstats
+
+---
+Explosion of art in p5 JS &amp; d4JS &amp; other technologies I am unfamiliar with, but this can also be done in {ggplot2}
+
+---
+.pull-left[
+.center[**Computational Art**] &lt;br&gt;
+&lt;img src="images/pattern_3.png" width="667" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+.center[**TidyTuesday: Data Visualization**] &lt;br&gt;
+&lt;img src="images/2020-16_avatar.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+
+
+```r
+ggplot() +
+  geom_segment(aes(x = 0, xend = 10,
+                   y = 1, yend = 1),
+               size = 5)
+```
+
+&lt;img src="index_files/figure-html/plot_geom_segment-1.png" width="720" style="display: block; margin: auto;" /&gt;
+
+
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(aes(x = 0, xend = 10,
+                   y = 1, yend = 1),
+               size = 5)
+```
+
+&lt;img src="index_files/figure-html/horizontal_segment-1.png" width="504" /&gt;
+]
+
+.pull-right[
+
+```r
+ggplot() +
+  geom_segment(aes(x = 0, xend = 10,
+                   y = 1, yend = 1),
+               size = 5) + 
+* coord_polar()
+```
+
+&lt;img src="index_files/figure-html/coord_horizontal_segment-1.png" width="504" /&gt;
+]
+
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(aes(x = 5, xend = 5,
+                   y = 1, yend = 10),
+               size = 5) 
+```
+
+&lt;img src="index_files/figure-html/vertical_segment-1.png" width="504" /&gt;
+]
+
+.pull-right[
+
+```r
+ggplot() +
+  geom_segment(aes(x = 5, xend = 5,
+                   y = 1, yend = 10),
+               size = 5)  +
+* coord_polar()
+```
+
+&lt;img src="index_files/figure-html/coord_vertical_segment-1.png" width="504" /&gt;
+]
+---
+### Computational Art
+.pull-left[
+
+```r
+center_circle = tibble(
+  x = seq(0, 19, by = .5),
+  xend = x,
+  y = rep(0, length(x)),
+  yend = rep(3, length(x))
+)
+
+outer_circle = center_circle %&gt;%
+  mutate(y = yend,
+         yend = yend + 6)
+```
+]
+
+.pull-right[
+**center circle segments**  
+- x ranges from 0 to 19, in increments of .5  
+- xend is equal to x (vertical lines)  
+- y is 0
+- yend is 3  
+  
+**outer circle segments**  
+- x is the same
+- xend is the same
+- y is now 3
+- yend is now 6
+]
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend))
+```
+]
+
+.pull-right[
+![](index_files/figure-html/comp_art-1.png)
+]
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend)) +
+  coord_polar()
+```
+]
+
+.pull-right[
+![](index_files/figure-html/comp_art_1-1.png)
+]
+
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend)) +
+  geom_segment(data = outer_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend)) +
+  coord_polar()
+```
+]
+
+.pull-right[
+![](index_files/figure-html/comp_art_2-1.png)
+]
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+*              size = 0.5) +
+  geom_segment(data = outer_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+*              size = 2) +
+  coord_polar()
+```
+]
+.pull-right[
+![](index_files/figure-html/comp_art_3-1.png)
+]
+
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+               size = 0.5) + 
+  geom_segment(data = outer_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+               size = 2) + 
+* scale_y_continuous(limits = c(-2, 10)) +
+  coord_polar() 
+```
+]
+.pull-right[
+![](index_files/figure-html/comp_art_4-1.png)
+]
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+               size = 0.5) +
+  geom_segment(data = outer_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+               size = 2) +
+  scale_y_continuous(limits = c(-2, 10)) + 
+  coord_polar() +
+  theme( 
+*   panel.grid = element_blank(),
+*   axis.title = element_blank(),
+*   axis.text = element_blank(),
+*   axis.ticks = element_blank()
+  )
+```
+]
+.pull-right[
+![](index_files/figure-html/comp_art_5-1.png)
+]
+---
+.pull-left[
+
+```r
+ggplot() +
+  geom_segment(data = center_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+               size = 0.5,
+*              color = "white") +
+  geom_segment(data = outer_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+               size = 2,
+*              color = "white") +
+  scale_y_continuous(limits = c(-2, 10)) + 
+  coord_polar() +
+  theme(
+*   plot.background = element_rect(
+*     fill = "#8a484a"),
+*   panel.background = element_rect(
+*     fill = "#8a484a"),
+    panel.grid = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+]
+.pull-right[
+![](index_files/figure-html/comp_art_6-1.png)
+]
+---
+
+.pull-left[
+# Take the ideas from our computational art piece, and create the TidyTuesday Visualization
+]
+
+.pull-right[
+&lt;img src="images/2020-16_avatar.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+.pull-left[
+# Computational Art
+You can create or generate your own *clean* data to create your visualization
+]
+
+.pull-right[
+# Data Visualization
+We often have to work with the data available to us.  
+So first, we clean our data 💉
+]
+
+---
+
+# TidyTuesday 2020: Week 3 Avatar!
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; book &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; book_num &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; chapter &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; chapter_num &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; character &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; The Boy in the Iceberg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Katara &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; The Boy in the Iceberg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Scene Description &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; The Boy in the Iceberg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sokka &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; The Boy in the Iceberg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Scene Description &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; The Boy in the Iceberg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Katara &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; The Boy in the Iceberg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sokka &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; character &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; full_text &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Katara &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Water. Earth. Fire. Air. My grandmother used to tell me stories about the old days: a time of peace when the Avatar kept balance between the Water Tribes, Earth Kingdom, Fire Nation and Air Nomads. But that all changed when the Fire Nation attacked. Only the Avatar mastered all four elements; only he could stop the ruthless firebenders. But when the world needed him most, he vanished. A hundred years have passed, and the Fire Nation is nearing victory in the war. Two years ago, my father and the men of my tribe journeyed to the Earth Kingdom to help fight against the Fire Nation, leaving me and my brother to look after our tribe. Some people believe that the Avatar was never reborn into the Air Nomads and that the cycle is broken, but I haven't lost hope. I still believe that, somehow, the Avatar will return to save the world. &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Scene Description &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; As the title card fades, the scene opens onto a shot of an icy sea before panning slowly to the left, revealing more towering icebergs drifting in the water as the shot rotates, moving over a large snow-covered area where the untouched blanket of snow is broken by two tracks of footsteps. The shot fades to another shot of the sea and of icebergs in blue water contrasted by the paleness of the sky beyond. As the shot once again pans to the left and rotates likewise, a small canoe comes into view, its motion through the water indicated by the wake left behind it. The shot zooms slightly on the canoe before cutting down to it, providing a side angle of the canoe and of the walls of ice rising on either side of the vessel. Two people, a boy and a girl, are sitting in the boat; the boy holds a spear at the ready, while the girl simply stares into the water on the other side of the boat. The shot cuts to an overhead view, revealing that a fish is swimming close to the surface right in front of the boy, who is focused on it, following its every movement. Cut to a frontal view of him. &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sokka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; It's not getting away from me this time. [Close-up of the boy as he grins confidently over his shoulder in the direction of the girl.] Watch and learn, Katara. This is how you catch a fish. &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+class: center, middle
+
+&lt;img src="images/avatar/appa.png" width="100%" style="display: block; margin: auto;" /&gt;
+## Who mentioned Appa and how many times per episode?
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
