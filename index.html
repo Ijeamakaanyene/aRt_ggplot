@@ -5,35 +5,54 @@
     <meta charset="utf-8" />
     <meta name="author" content="Ijeamaka Anyene" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
     <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+    <link rel="stylesheet" href="my_css/theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 
+background-image: url(images/flower_cover_art_v5.png)
+background-size: cover
+class: left, bottom
 
 
 
 
 
+.my-white[
 # aRt + ggplot: exploring radial visualizations
-### Ijeamaka Anyene
-### RLadies Johannesburg &amp; Tunis Meetup
-### 2020/01/14
-
+**Ijeamaka Anyene**  
+**RLadies Johannesburg &amp; Tunis Meetup | January 14th, 2021**
+]
 ---
-class: center, middle 
-## aRt: intersection of computation and art  
+class: transition-slide-blue, center, middle
+.my-green[
+# aRt: intersection of computation and art
+]
+&lt;br&gt;
 --
+.my-white[
 ## ...but in #rstats
+]
 ---
-class: middle 
+class: transition-slide-blue, middle
 
-## .center[Why do computational art?]
-1. It is fun!  
-2. It can be as simple or as complicated as you like (generative art w/ algorithms).  
-3. **Exploring computational art can lead to inspiration for your data visualizations.** 
+.my-white[
+# Why do computational art?
+]
+--
+.my-white[
+### 1. It is fun!
+]
+--
+.my-white[
+### 2. It can be as simple or as complicated as you like/
+]
+--
+.my-white[
+## 3. Exploring computational art can lead to inspiration for your data visualizations.
+]
 
 ---
 .pull-left[
@@ -45,8 +64,21 @@ class: middle
 .center[**TidyTuesday: Data Visualization**] &lt;br&gt;
 &lt;img src="images/2020-16_avatar.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
+--
 
-**Both the left image and the right image use the same visualization techniques**
+.center[**Both images use the same visualization techniques**]
+
+---
+class: transition-slide-blue, center, middle
+
+.my-white[
+# Horizontal vs. vertical segment orientations have a different appearances in the polar coordinate system
+]
+
+--
+.my-white[
+# Using a polar coordinate system is one of the easiest ways to make a radial-based visualization
+]
 
 ---
 
@@ -72,7 +104,7 @@ ggplot() +
                size = 5)
 ```
 
-&lt;img src="index_files/figure-html/horizontal_segment-1.png" width="504" /&gt;
+&lt;img src="index_files/figure-html/horizontal_segment-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
@@ -85,7 +117,7 @@ ggplot() +
 * coord_polar()
 ```
 
-&lt;img src="index_files/figure-html/coord_horizontal_segment-1.png" width="504" /&gt;
+&lt;img src="index_files/figure-html/coord_horizontal_segment-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -98,7 +130,7 @@ ggplot() +
                size = 5) 
 ```
 
-&lt;img src="index_files/figure-html/vertical_segment-1.png" width="504" /&gt;
+&lt;img src="index_files/figure-html/vertical_segment-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
@@ -111,10 +143,20 @@ ggplot() +
 * coord_polar()
 ```
 
-&lt;img src="index_files/figure-html/coord_vertical_segment-1.png" width="504" /&gt;
+&lt;img src="index_files/figure-html/coord_vertical_segment-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 ---
-### Computational Art
+class: transition-gradient-blue, middle
+.pull-left[
+.my-white[
+# Using this knowledge, lets build the computational art piece!
+]
+]
+
+.pull-right[
+&lt;img src="images/pattern_3.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+---
 .pull-left[
 
 ```r
@@ -242,6 +284,8 @@ ggplot() +
                aes(x = x, xend = xend,
                    y = y, yend = yend))
 ```
+&lt;br&gt;&lt;br&gt;
+**Add center_circle segments**
 ]
 
 .pull-right[
@@ -255,8 +299,13 @@ ggplot() +
   geom_segment(data = center_circle,
                aes(x = x, xend = xend,
                    y = y, yend = yend)) +
-* coord_polar()
+* geom_segment(data = outer_circle,
+*              aes(x = x, xend = xend,
+*                  y = y, yend = yend))
 ```
+&lt;br&gt;&lt;br&gt;
+**Add outer_circle segments**&lt;br&gt;
+But we can't distinguish between the two!
 ]
 
 .pull-right[
@@ -270,12 +319,15 @@ ggplot() +
 ggplot() +
   geom_segment(data = center_circle,
                aes(x = x, xend = xend,
-                   y = y, yend = yend)) +
-* geom_segment(data = outer_circle,
-*              aes(x = x, xend = xend,
-*                  y = y, yend = yend)) +
-  coord_polar()
+                   y = y, yend = yend),
+*              size = 0.5) +
+  geom_segment(data = outer_circle,
+               aes(x = x, xend = xend,
+                   y = y, yend = yend),
+*              size = 2)
 ```
+&lt;br&gt;&lt;br&gt;
+**Change the size of the line segments**&lt;br&gt;
 ]
 
 .pull-right[
@@ -289,13 +341,15 @@ ggplot() +
   geom_segment(data = center_circle,
                aes(x = x, xend = xend,
                    y = y, yend = yend),
-*              size = 0.5) +
+               size = 0.5) + 
   geom_segment(data = outer_circle,
                aes(x = x, xend = xend,
                    y = y, yend = yend),
-*              size = 2) +
-  coord_polar()
+               size = 2) + 
+* coord_polar()
 ```
+&lt;br&gt;&lt;br&gt;
+**Change to polar coordinate system for visualization to be a circle**
 ]
 .pull-right[
 ![](index_files/figure-html/comp_art_3-1.png)
@@ -314,9 +368,12 @@ ggplot() +
                aes(x = x, xend = xend,
                    y = y, yend = yend),
                size = 2) + 
-* ylim(-2, 10) +
-  coord_polar() 
+  coord_polar() +
+* ylim(-2, 10)
 ```
+&lt;br&gt;&lt;br&gt;
+**Modify `ylim()` to change the appearance of the center of the circle**
+
 ]
 .pull-right[
 ![](index_files/figure-html/comp_art_4-1.png)
@@ -334,8 +391,8 @@ ggplot() +
                aes(x = x, xend = xend,
                    y = y, yend = yend),
                size = 2) +
-  ylim(-2, 10) + 
   coord_polar() +
+  ylim(-2, 10) + 
   theme( 
 *   panel.grid = element_blank(),
 *   axis.title = element_blank(),
@@ -380,9 +437,12 @@ ggplot() +
 ![](index_files/figure-html/comp_art_6-1.png)
 ]
 ---
+class: transition-gradient-blue, middle
 
 .pull-left[
+.my-white[
 # Take the ideas from our computational art piece, and create the TidyTuesday Visualization
+]
 ]
 
 .pull-right[
@@ -395,7 +455,7 @@ ggplot() +
 library(ggplot2)
 library(dplyr)
 library(ggimage)
-library(idyr)
+library(tidyr)
 ```
 ---
 
@@ -497,13 +557,22 @@ class: center, middle
 ## Who mentioned Appa and how many times per episode?
 
 ---
-## Step 1: Load Images
+.pull-left[
 
 ```r
-img = c(here::here("images", "avatar", "earth_element.png"),
-        here::here("images", "avatar", "fire_element.png"),
-        here::here("images", "avatar", "water_element.png"))
+img = c(here::here("images", "avatar", 
+                   "earth_element.png"),
+        here::here("images", "avatar", 
+                   "fire_element.png"),
+        here::here("images", "avatar", 
+                   "water_element.png"))
 ```
+]
+
+.pull-right[
+&lt;img src="images/bookconcat_images.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
 ---
 
 ```r
@@ -529,7 +598,6 @@ book_chapter = avatar %&gt;%
    &lt;th style="text-align:right;"&gt; chapter_num &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; chapter_seq &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; mention_max &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; images &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
@@ -538,21 +606,18 @@ book_chapter = avatar %&gt;%
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -632,7 +697,6 @@ appa_data_merged =
    &lt;th style="text-align:right;"&gt; chapter_num &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; chapter_seq &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; mention_max &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; images &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; character &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; appa_mentions_sum &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; duplicate_episode &lt;/th&gt;
@@ -644,7 +708,6 @@ appa_data_merged =
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Aang &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
@@ -654,7 +717,6 @@ appa_data_merged =
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Aang &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
@@ -664,7 +726,6 @@ appa_data_merged =
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Katara &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; TRUE &lt;/td&gt;
@@ -674,7 +735,6 @@ appa_data_merged =
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Aang &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
@@ -684,7 +744,6 @@ appa_data_merged =
    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; /Users/ijeamakaanyene/repos/aRt_ggplot/images/avatar/water_element.png &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Aang &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; FALSE &lt;/td&gt;
@@ -698,15 +757,19 @@ appa_data_merged =
 
 ---
 .pull-left[
-**Line segments for chapters + mentions**
 
 ```r
-ggplot(data = appa_data_merged) +
+appa_plot = 
+  ggplot(data = appa_data_merged) +
   geom_segment(aes(x = chapter_seq,
                    xend = chapter_seq,
                    y = 0,
                    yend = appa_mentions_sum))
+appa_plot
 ```
+&lt;br&gt;
+**Add line segments for each chapter and number of Appa mentions**
+
 ]
 
 
@@ -715,28 +778,10 @@ ggplot(data = appa_data_merged) +
 ]
 ---
 .pull-left[
-**Line segments for chapters + mentions**
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-* coord_polar()
-```
-]
-
-.pull-right[
-![](index_files/figure-html/appa_plot_2-1.png)
-]
-
----
-.pull-left[
-**Line segments for chapters + mentions**
-
-```r
-ggplot(data = appa_data_merged) +
+appa_plot = 
+  ggplot(data = appa_data_merged) +
   geom_segment(aes(x = chapter_seq,
                    xend = chapter_seq,
                    y = 0,
@@ -745,9 +790,39 @@ ggplot(data = appa_data_merged) +
 *                  xend = chapter_seq,
 *                  y = appa_mentions_sum,
 *                  yend = mention_max),
-*              linetype = "dotted") +
-  coord_polar()
+*              linetype = "dotted")
+
+appa_plot
 ```
+**Add dashed lines to make all segments equal in height**
+
+]
+
+.pull-right[
+![](index_files/figure-html/appa_plot_2-1.png)
+]
+
+---
+.pull-left[
+
+```r
+appa_plot = 
+  ggplot(data = appa_data_merged) +
+  geom_segment(aes(x = chapter_seq,
+                   xend = chapter_seq,
+                   y = 0,
+                   yend = appa_mentions_sum)) +
+  geom_segment(aes(x = chapter_seq, 
+                   xend = chapter_seq, 
+                   y = appa_mentions_sum, 
+                   yend = mention_max), 
+               linetype = "dotted") +
+* coord_polar()
+
+appa_plot
+```
+&lt;br&gt;&lt;br&gt;
+**Change to polar coordinate system**
 ]
 
 .pull-right[
@@ -755,25 +830,18 @@ ggplot(data = appa_data_merged) +
 ]
 ---
 .pull-left[
-**Icon to indicate book type**
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
+appa_plot +
 * geom_image(aes(x = chapter_seq,
 *                y = mention_max + 2,
 *                image = images),
-*            size = 0.03) +
-  coord_polar()
+*            size = 0.03)
 ```
+&lt;br&gt;&lt;br&gt;
+**Adding image to indicate book type**  
+  
+Do you notice that the images overlap at the top of circle?
 ]
 
 .pull-right[
@@ -781,26 +849,19 @@ ggplot(data = appa_data_merged) +
 ]
 ---
 .pull-left[
-**Icon to indicate book type**
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
+appa_plot = 
+  appa_plot + 
   geom_image(aes(x = chapter_seq, 
                  y = mention_max + 2, 
                  image = images),
              size = 0.03) + 
-* xlim(0, 61) +
-  coord_polar()
+* xlim(0, 61)
+
+appa_plot
 ```
+**Expanding x-axis to remove overlap**
 ]
 
 .pull-right[
@@ -810,30 +871,20 @@ ggplot(data = appa_data_merged) +
 .pull-left[
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
-  geom_image(aes(x = chapter_seq,
-                 y = mention_max + 2, 
-                 image = images), 
-             size = 0.03) + 
+appa_plot = 
+  appa_plot + 
 * geom_text(aes(x = chapter_seq,
 *               y = 31,
 *               label = paste0(character, " ",
 *                              book_num, ".",
 *                              chapter_num),
 *               angle = angle),
-*           size = 3.5) +
-   xlim(0, 61) +
-  coord_polar()
+*           size = 3.5)
 ```
+&lt;br&gt;&lt;br&gt;
+**Add character, book, and chapter number label**  
+  
+The center of the circle is a little cluttered...
 ]
 
 .pull-right[
@@ -843,31 +894,11 @@ ggplot(data = appa_data_merged) +
 .pull-left[
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
-  geom_image(aes(x = chapter_seq,
-                 y = mention_max + 2, 
-                 image = images), 
-             size = 0.03) + 
-  geom_text(aes(x = chapter_seq, 
-                y = 31,
-                label = paste0(character, " ", 
-                               book_num, ".", 
-                               chapter_num),
-                angle = angle), 
-            size = 3.5) + 
-  xlim(0, 61) +
-* ylim(-15,35) +
-  coord_polar()
+appa_plot + 
+* ylim(-15,35)
 ```
+&lt;br&gt;&lt;br&gt;
+**Expand y-axis to have center circle**
 ]
 
 .pull-right[
@@ -877,35 +908,16 @@ ggplot(data = appa_data_merged) +
 .pull-left[
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
-  geom_image(aes(x = chapter_seq,
-                 y = mention_max + 2, 
-                 image = images), 
-             size = 0.03) + 
-  geom_text(aes(x = chapter_seq, 
-                y = 31,
-                label = paste0(character, " ", 
-                               book_num, ".", 
-                               chapter_num),
-                angle = angle), 
-            size = 3.5) + 
+appa_plot + 
 * geom_segment(aes(x = 0,
 *                  xend = 61,
 *                  y = 0,
 *                  yend = 0)) +
-   xlim(0, 61) +
-  ylim(-15,35) + 
-  coord_polar()
+  ylim(-15,35)
 ```
+&lt;br&gt;&lt;br&gt;
+**Add an inner circle for ~aesthetics~**
+
 ]
 
 .pull-right[
@@ -913,52 +925,26 @@ ggplot(data = appa_data_merged) +
 ]
 ---
 
-```r
-appa_img = c(here::here("images", "avatar", "appa.png"))
 
-appa_tibble = tibble(x = 30, 
-                     y = -15, 
-                     icon = appa_img)
-```
-
----
 .pull-left[
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
-  geom_image(aes(x = chapter_seq,
-                 y = mention_max + 2, 
-                 image = images), 
-             size = 0.03) + 
-  geom_text(aes(x = chapter_seq, 
-                y = 31,
-                label = paste0(character, " ", 
-                               book_num, ".", 
-                               chapter_num),
-                angle = angle), 
-            size = 3.5) + 
+appa_plot = 
+  appa_plot + 
   geom_segment(aes(x = 0, 
                    xend = 61, 
                    y = 0, 
                    yend = 0)) + 
-* geom_image(data = appa_tibble,
-*            aes(x = x,
-*                y = y,
-*                image = icon),
+* geom_image(aes(x = 30,
+*                y = -15,
+*                image = appa_img),
 *            size = .25) +
-  xlim(0, 61) +
-  ylim(-15,35) + 
-  coord_polar()
+  ylim(-15,35)
+
+appa_plot
 ```
+&lt;br&gt;&lt;br&gt;
+**Add an Appa image to center of visualization**
 ]
 
 .pull-right[
@@ -968,58 +954,45 @@ ggplot(data = appa_data_merged) +
 .pull-left[
 
 ```r
-ggplot(data = appa_data_merged) +
-  geom_segment(aes(x = chapter_seq,
-                   xend = chapter_seq,
-                   y = 0,
-                   yend = appa_mentions_sum)) +
-  geom_segment(aes(x = chapter_seq, 
-                   xend = chapter_seq, 
-                   y = appa_mentions_sum, 
-                   yend = mention_max), 
-               linetype = "dotted") + 
-  geom_image(aes(x = chapter_seq,
-                 y = mention_max + 2, 
-                 image = images), 
-             size = 0.03) + 
-  geom_text(aes(x = chapter_seq, 
-                y = 31,
-                label = paste0(character, " ", 
-                               book_num, ".", 
-                               chapter_num),
-                angle = angle), 
-*           family = "Lora",
-            size = 3.5) + 
-  geom_segment(aes(x = 0, 
-                   xend = 61, 
-                   y = 0, 
-                   yend = 0)) + 
-  geom_image(data = appa_tibble, 
-             aes(x = x, 
-                 y = y,
-                 image = icon), 
-             size = .25) + 
-  xlim(0, 61) +
-  ylim(-15,35) + 
-  coord_polar() +
-* theme(panel.background = element_rect(fill = "#e1d2c0"),
-*       plot.background = element_rect(fill = "#e1d2c0",
-*                                      colour = "#0f0d0d",
-*                                      size = 4),
+appa_plot +
+* theme(text = element_text(
+*       family = "Lora"),
+*       panel.background = element_rect(
+*         fill = "#e1d2c0"),
+*       plot.background = element_rect(
+*         fill = "#e1d2c0",
+*         colour = "#0f0d0d",
+*         size = 4),
 *       panel.grid = element_blank(),
 *       axis.text = element_blank(),
 *       axis.title = element_blank(),
 *       axis.ticks = element_blank())
 ```
+&lt;br&gt;&lt;br&gt;
+**Update theme**
 ]
 
 .pull-right[
 ![](index_files/figure-html/appa_plot_aes1-1.png)
 ]
 ---
-class: center, middle 
-[@ijeamaka_a](https://twitter.com/ijeamaka_a)
+.pull-left[
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+class: center, middle, transition-slide-blue
+#.my-white[Thank you!]
+
+.my-white[
+[@ijeamaka_a](https://twitter.com/ijeamaka_a)&lt;br&gt;
 [ijeamakaa/aRt_ggplot_slides]()
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

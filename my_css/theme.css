@@ -2,10 +2,38 @@
 :root {
 --RaisinBlack: #252323;
 --White: #FFFFFF;
+--Green: #4b8378;
+--Tan: #e4d7d0;
+
 }
 
-/* Title Slide */
-/* title-slide {
-  background-color: #39603d;
-  color: white;
-} */
+/* Font Color */
+.my-white{ color: var(--White);}
+.my-black{ color: var(--RaisinBlack);}
+.my-green{ color: var(--Green);}
+.my-tan{ color:var(--Tan);}
+
+/* Slides */
+.transition-slide-green {
+  background-color: var(--Green);
+}
+
+.transition-gradient-green{
+  background: linear-gradient(90deg, #4b8378 50%, #FFFFFF 50%);
+}
+
+.transition-slide-blue {
+  background-color: #0b1b32;
+}
+
+.transition-gradient-blue {
+  background: linear-gradient(90deg, #0b1b32 50%, #FFFFFF 50%);
+}
+
+/* Hiding Slide Number */
+.remark-slide-number { 
+  display: none; 
+}
+
+
+
