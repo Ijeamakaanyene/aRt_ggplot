@@ -3,7 +3,7 @@
 --RaisinBlack: #252323;
 --White: #FFFFFF;
 --Green: #4b8378;
---Tan: #e4d7d0;
+--Yellow: #ffbd59;
 
 }
 
@@ -11,7 +11,7 @@
 .my-white{ color: var(--White);}
 .my-black{ color: var(--RaisinBlack);}
 .my-green{ color: var(--Green);}
-.my-tan{ color:var(--Tan);}
+.my-yellow{ color:var(--Yellow);}
 
 /* Slides */
 .transition-slide-green {
