@@ -27,7 +27,7 @@ meta() %>%
   meta_social(
     title = "aRt + ggplot: exploring radial visualizations",
     description = paste0(
-      "Exploring how trying computational art and further develop your data visualization skills. ",
+      "Computational art techniques can inform and spice up your data visualizations. ",
       "Presented at RLadies Johannesburg & Tunis Meetup January 14th, 2021"),
     url = "https://ijeamakaanyene.github.io/aRt_ggplot/index.html",
     image = "https://raw.githubusercontent.com/Ijeamakaanyene/aRt_ggplot/main/cover_image.png",
