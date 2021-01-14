@@ -19,7 +19,33 @@ background-image: url(images/flower_cover_art_v5.png)
 background-size: cover
 class: left, bottom
 
-```{r, libraries, include = FALSE}
+```{r metathis, include = FALSE}
+library(metathis)
+
+meta() %>%
+  meta_name("github-repo" = "Ijeamakaanyene/aRt_ggplot") %>%
+  meta_social(
+    title = "aRt + ggplot: exploring radial visualizations",
+    description = paste0(
+      "Exploring how trying computational art and further develop your data visualization skills. ",
+      "Presented at RLadies Johannesburg & Tunis Meetup January 14th, 2021"),
+    url = "https://ijeamakaanyene.github.io/aRt_ggplot/index.html",
+    image = "https://raw.githubusercontent.com/Ijeamakaanyene/aRt_ggplot/main/cover_image.png",
+    image_alt = paste0(
+      "Title slide of aRt + ggplot: exploring radial visualizations ",
+      "Presented at RLadies Johannesburg & Tunis Meetup January 14th, 2021"),
+    og_type = "website",
+    og_author = "Ijeamaka Anyene",
+    twitter_card_type = "summary_large_image",
+    twitter_creator = "@ijeamaka_a",
+    twitter_site = "@ijeamaka_a")
+```
+
+```{r, xaringanExtra-share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+```
+
+```{r libraries, include = FALSE}
 library(ggplot2)
 library(dplyr)
 library(ggimage)
